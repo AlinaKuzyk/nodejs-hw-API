@@ -10,7 +10,6 @@ const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 app.use(logger(formatsLogger));
 app.use(cors());
-// для того чтобы можно было считать тело запроса в RequestBody
 app.use(express.json());
 
 app.use("/api/contacts", contactsRouter);
