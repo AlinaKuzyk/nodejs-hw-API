@@ -1,10 +1,10 @@
-const contacts = require("../../models/contacts");
+const { Contact } = require("../../models/contact");
 const createError = require("http-errors");
 
 const deleteContact = async (req, res, next) => {
   try {
     const { contactId } = req.params;
-    const result = await contacts.removeContact(contactId);
+    const result = await Contact.findByIdAndRemove(contactId);
     if (!result) {
       throw createError(404, `There is no contact with id=${contactId}`);
     }
@@ -18,6 +18,4 @@ const deleteContact = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  deleteContact,
-};
+module.exports = deleteContact;
