@@ -1,19 +1,18 @@
 const { Contact, schemas } = require("../../models/contact");
 const createError = require("http-errors");
 
-const updateContact = async (req, res, next) => {
+const updateFavoriteContact = async (req, res, next) => {
   try {
-    const { error } = schemas.addSchema.validate(req.body);
+    const { error } = schemas.updateFavoriteSchema.validate(req.body);
     if (error) {
       error.status = 400;
       throw error;
     }
     const { contactId } = req.params;
-    const result = await Contact.findByIdAndUpdate(contactId, req.body, {
-      new: true,
-    });
+    const { favorite = false } = req.body;
+    const result = await Contact.findByIdAndUpdate(contactId, { favorite });
     if (!result) {
-      throw createError(404, `There is no contact with id=${contactId}`);
+      throw createError(404, `Not found contact with id=${contactId}`);
     }
     res.status(200).json({
       status: "success",
@@ -25,4 +24,4 @@ const updateContact = async (req, res, next) => {
   }
 };
 
-module.exports = updateContact;
+module.exports = updateFavoriteContact;
