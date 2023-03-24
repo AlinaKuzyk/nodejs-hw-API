@@ -9,8 +9,8 @@ const updateFavoriteContact = async (req, res, next) => {
       throw error;
     }
     const { contactId } = req.params;
-    const { isFavorite = false } = req.body;
-    const result = await Contact.findByIdAndUpdate(contactId, { isFavorite });
+    const { favorite = false } = req.body;
+    const result = await Contact.findByIdAndUpdate(contactId, { favorite });
     if (!result) {
       throw createError(404, `Not found contact with id=${contactId}`);
     }
