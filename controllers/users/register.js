@@ -1,6 +1,7 @@
 const { User, joiRegisterSchema } = require("../../models/user");
 const { Conflict } = require("http-errors");
 const bcrypt = require("bcryptjs");
+const gravatar = require("gravatar");
 
 const register = async (req, res, next) => {
   try {
@@ -16,9 +17,11 @@ const register = async (req, res, next) => {
       throw new Conflict(`User with email ${email} is already registered`);
     }
 
+    const avatarURL = gravatar.url(email);
     const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
     const result = await User.create({
+      avatarURL,
       email,
       password: hashPassword,
       subscription,
@@ -30,6 +33,7 @@ const register = async (req, res, next) => {
         user: {
           email,
           subscription,
+          avatarURL,
         },
       },
     });
